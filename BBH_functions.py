@@ -19,18 +19,17 @@ def get_parms():
     args = parser.parse_args()
     return(args)
 
-def get_BBH (db1, db2, output_dir, evalue = 1E-30) :
+def BLAST_index (db1, db2, output_dir, evalue = 1E-30) :
     #Make dir to store results
     blastoutputdir = output_dir + "/BLAST_data"
     os.makedirs(os.path.abspath(blastoutputdir))
-    blastoutputfile1 = os.path.abspath(blastoutputdir + "/blast_output1.XML")
-    blastoutputfile2 = os.path.abspath(blastoutputdir + "/blast_output2.XML")
+    blastoutputfile1 = os.path.abspath(blastoutputdir + "/" +
+                                       db1.split('.')[0] + "vs" +
+                                       db2.split('.')[0] + ".XML")
     #Make blastdbs from fasta:
-    if os.path.isfile(db1+".psq") and os.path.isfile(db2 + ".psq") :            #pseudocode must fix up like real
+    if os.path.isfile(db2 + ".psq") :            #pseudocode must fix up like real
         pass
     else:
-        make2ndBLASTdbcmd = "makeblastdb -in " + db1 + " -input_type fasta -dbtype prot"
-        subprocess.call(make2ndBLASTdbcmd, shell = True)
         make2ndBLASTdbcmd = "makeblastdb -in " + db2 + " -input_type fasta -dbtype prot"
         subprocess.call(make2ndBLASTdbcmd, shell = True)
 
@@ -41,14 +40,6 @@ def get_BBH (db1, db2, output_dir, evalue = 1E-30) :
     							  outfmt = 5,
     							  out    = blastoutputfile1)
     cline()
-    print("Done running BLAST #1")
-    cline = NcbiblastpCommandline(query  = db2,
-                                  db     = db1,
-    							  evalue = evalue,
-    							  outfmt = 5,
-    							  out    = blastoutputfile2)
-    cline()
-    print("Done running BLAST #2")
     #Parse the BLAST
     result_handle        = open( blastoutputfile1, "r")
     BLASTrecs            = NCBIXML.parse(result_handle)
@@ -60,19 +51,9 @@ def get_BBH (db1, db2, output_dir, evalue = 1E-30) :
             hID             = ali.hit_def
             ID_dict1[qID]   = {"hit ID" : hID, "alignmnent" : ali}
 
-    print("Done parsing IDs from BLAST 1")
+    return(ID_dict1)
 
-    result_handle        = open( blastoutputfile2, "r")
-    BLASTrecs            = NCBIXML.parse(result_handle)
-    ID_dict2 = {}
-    for B in BLASTrecs :
-        if B.alignments :
-            ali             = B.alignments[0]
-            qID             = B.query
-            hID             = ali.hit_def
-            ID_dict2[qID]   = {"hit ID" : hID, "alignmnent" : ali}
-    print("Done parsing IDs from BLAST 2")
-
+def get_BBH(dict1, dict2)
     #pull out IDS that are in values of one and keys of another.
     #there may be a more elegant way to do this.
     BBH_dict = {}

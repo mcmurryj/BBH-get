@@ -71,3 +71,12 @@ def print_BBHs(ID_dict) :
     for k in ID_dict.keys() :
         ID1, ID2 = k, ID_dict[k]["hit ID"]
         print(ID1 + "\t" + ID2)
+
+def get_mappings(mapfile) :
+    rhandle  =  open(mapfile, "r")
+    mappings =  {}
+    for line in rhandle :
+        ids  = line.split("\t")
+        mappings[ids[0]] = ids[1]
+
+    return(mappings)

@@ -8,6 +8,8 @@ parser.add_argument("-db",
                     help = "your input BLAST database")
 parser.add_argument("-out",
                     help = "the name of the directory where you wish to store output")
+parser.add_argument("-map",
+                    help = "TSV file mapping sc to hs subunits")
 parser.add_argument("--evalue",
                     default = 1E-30,
                     help = "The minimum acceptable BLAST evalue")
@@ -20,7 +22,8 @@ dict_hs = BLAST_index(args.hs, args.db, args.output_dir, args.evalue)
 dict_sc = BLAST_index(args.sc, args.db, args.output_dir, args.evalue)
 
 #A dict with the
-mapping_dict = {"Rpt4": "somehumanthing",,,,,}
+from BBH_functions import get_mappings
+mapping_dict = get_mappings(args.map)
 
 for k in dict_sc.keys():
     sc_hit_id = dict_sc[k]

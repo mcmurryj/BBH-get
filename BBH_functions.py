@@ -4,6 +4,7 @@ import os
 from Bio.Blast.Applications import NcbiblastpCommandline
 import subprocess
 from Bio.Blast import NCBIXML
+import re
 
 def get_parms():
     parser = argparse.ArgumentParser()
@@ -22,10 +23,11 @@ def get_parms():
 def BLAST_index (db1, db2, output_dir, evalue = 1E-30) :
     #Make dir to store results
     blastoutputdir = output_dir + "/BLAST_data"
-    os.makedirs(os.path.abspath(blastoutputdir))
-    blastoutputfile1 = os.path.abspath(blastoutputdir + "/" +
-                                       db1.split('.')[0] + "vs" +
-                                       db2.split('.')[0] + ".XML")
+    if not os.path.isdir(blastoutputdir) :
+        os.makedirs(os.path.abspath(blastoutputdir))
+    outputID = "/" + re.split('[\\\/.]+', db1)[-2] + "_vs_" + re.split('[\\\/.]+', db2)[-2] + ".XML"
+    print(outputID)
+    blastoutputfile1 = os.path.abspath(blastoutputdir + outputID)
     #Make blastdbs from fasta:
     if os.path.isfile(db2 + ".psq") :            #pseudocode must fix up like real
         pass
@@ -53,16 +55,16 @@ def BLAST_index (db1, db2, output_dir, evalue = 1E-30) :
 
     return(ID_dict1)
 
-def get_BBH(dict1, dict2)
+def get_BBH(dict1, dict2) :
     #pull out IDS that are in values of one and keys of another.
     #there may be a more elegant way to do this.
     BBH_dict = {}
-    for k in ID_dict1.keys() :
+    for k in dict1.keys() :
         # v is the ID of the best hit of k from db1 into db2
-        v = ID_dict1[k]["hit ID"]
+        v = dict1[k]["hit ID"]
         # is k the ID of the best hit of v from db2 into db1???
-        if  ID_dict2[v]["hit ID"] == k :
-            BBH_dict[k] = ID_dict1[k]
+        if  dict2[v]["hit ID"] == k :
+            BBH_dict[k] = dict1[k]
     return(BBH_dict)
 
 def print_BBHs(ID_dict) :

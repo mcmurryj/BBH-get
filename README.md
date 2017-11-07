@@ -8,8 +8,11 @@ Get_BBH is a tool for retrieving Best Bilateral BLAST hits (BBHs) between two fa
 
 #### Arguments
 *db1* A proteome in multiple sequence fasta format.
+
 *db2* A proteome in multiple sequence fasta format.
+
 *out* A directory in which to store the BLAST output.
+
 *evalue* Optional E value cutoff for BLAST search, default is 1E-30 which is stringent.
 
 #### Output

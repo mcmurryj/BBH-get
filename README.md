@@ -1,10 +1,17 @@
-get_BBH is a tool for retrieving best bilateral blast hits between two fasta databases.
+## Get_BBH
 
-USAGE:
-get_BBH -db1 your_first_faa_file.faa -db2 your_2nd_FAA_file.faa -out /some/path/youroutputdir --evalue 1E-50
+#### Description
+Get_BBH is a tool for retrieving Best Bilateral BLAST hits (BBHs) between two fasta databases.
 
-Output:
-right now, prints the IDs of best bilateral BLAST hit pairs.  Pretty messy.  
+#### Usage
+*get_BBH -db1 your_first_faa_file.faa -db2 your_2nd_FAA_file.faa -out /some/path/youroutputdir --evalue 1E-50*
 
-TODO:
-Finish the get_homologues script, which will retrieve sequences with the same best hit from 2x reference sets.  For assembling MSA of large complex type stuff.
+#### Arguments
+*db1* A proteome in multiple sequence fasta format.
+*db2* A proteome in multiple sequence fasta format.
+*out* A directory in which to store the BLAST output.
+*evalue* Optional E value cutoff for BLAST search, default is 1E-30 which is stringent.
+
+#### Output
+
+Prints the IDs of best bilateral BLAST hit pairs to STDOUT.

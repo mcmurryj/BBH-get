@@ -1,4 +1,6 @@
 #!/usr/bin/python
+import argparse
+
 parser = argparse.ArgumentParser()
 parser.add_argument("-hs",
                     help = "Subunits of human")
